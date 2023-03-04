@@ -56,7 +56,7 @@ private:
 
 	void initializeSounds()
 	{
-		flySound.load("D:\\Programming-Projects\\GLFlappyBird\\GLFlappyBird\\sounds\\fly.wav");
+		flySound.load("sounds\\fly.wav");
 	}
 
 	void initializeAudioSources()
