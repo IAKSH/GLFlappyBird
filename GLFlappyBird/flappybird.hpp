@@ -26,12 +26,22 @@ public:
 	void onTick();
 };
 
+class Pipe : public flat::GameObject
+{
+public:
+	Pipe();
+	~Pipe();
+	void onTick();
+	void reroll(float x);
+};
+
 class FlappyBird : public flat::Gameplay
 {
 private:
 	flat::TransformMap map;
 	Bird bird;
 	Background background;
+	Pipe pipes[3];
 
 	void handleInput(GLFWwindow* window);
 	void draw();
@@ -41,7 +51,7 @@ private:
 public:
 	FlappyBird()
 	{
-
+		initializeCustomSettings();
 	}
 
 	~FlappyBird()

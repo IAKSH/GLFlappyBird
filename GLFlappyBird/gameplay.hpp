@@ -30,10 +30,10 @@ namespace flat
 		virtual void handleInput(GLFWwindow* window);
 		virtual void draw();
 		virtual void tick();
-
-	public:
 		Gameplay();
 		~Gameplay();
+
+	public:
 		void initializeGamePlay();
 		void mainLoop();
 		void exit();
