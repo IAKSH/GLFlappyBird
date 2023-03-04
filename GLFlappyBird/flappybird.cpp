@@ -59,7 +59,7 @@ void FlappyBird::initializeCustomSettings()
 	int i = 3;
 	for (auto& pipe : pipes)
 	{
-		pipe.id = i++;
+		pipe.id = i++ * 0.75f;
 		pipe.name = std::format("pipe{}", i - 3);
 		pipe.reroll(i);
 		//pipe.setPosition(i, 0.0f, 0.0f);
@@ -71,10 +71,9 @@ Bird::Bird()
 	id = 1;
 	name = "bird";
 
-	writeVertexes({ 0.07f,0.1f,0.0f,0.07f,-0.1f,0.0f,-0.07f,-0.1f,0.0f,-0.07f,0.1f,0.0f });
-	writeColors({ 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f });
-	writeTexCoord({ 1.0f,1.0f, 1.0f,0.0f ,0.0f,0.0f,0.0f,1.0f });
-	makeDrawMeta();
+	setPosition(-0.8f, 0.0f, 0.0f);
+	setSize(0.14f, 0.25f);
+	makeDrawMeta(getSize());
 
 	loadNewAnimation("fly", 250, { "images\\bird0_0.png","images\\bird0_1.png","images\\bird0_2.png" });
 	loadAnimation("fly");
@@ -82,8 +81,6 @@ Bird::Bird()
 	flySound.load("sounds\\fly.wav");
 	setLoopable(false);
 	updateSoundPhysics();
-
-	setPosition(-0.8f, 0.0f, 0.0f);
 }
 
 Bird::~Bird()
@@ -96,6 +93,8 @@ void Bird::onTick()
 	auto velocity = getVelocity();
 	setPosition(oriPosition.at(0), oriPosition.at(1) + velocity.at(1), oriPosition.at(2));
 	setVelocity(velocity.at(0), velocity.at(1) - 0.005f, velocity.at(2));
+
+	std::cout << getPosition()[1] << '\n';
 }
 
 void Bird::playFlySound()
@@ -108,10 +107,8 @@ Background::Background()
 	id = 2;
 	name = "background";
 
-	writeVertexes({ 1.0f,1.0f,-0.5f,1.0f,-1.0f,-0.5f,-1.0f,-1.0f,-0.5f,-1.0f,1.0f,-0.5f });
-	writeColors({ 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f });
-	writeTexCoord({ 1.0f,1.0f,1.0f,0.0f,0.0f,0.0f,0.0f,1.0f });
-	makeDrawMeta();
+	setSize(2.0f, 2.0f);
+	makeDrawMeta(getSize());
 
 	loadNewAnimation("day", 250, { "images\\bg_day.png" });
 	loadAnimation("day");
@@ -123,20 +120,17 @@ Background::~Background()
 
 void Background::onTick()
 {
-	offset += 0.005f;
+	offset += 0.0025f;
 	if (offset <= -1.0f)
 		offset = 1.0f;
 }
 
 Pipe::Pipe()
 {
-	writeVertexes({ 0.07f,1.0f,-0.1f,0.07f,-1.0f,-0.1f,-0.07f,-1.0f,-0.1f,-0.07f,1.0f,-0.1f });
-	writeColors({ 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f });
-	writeTexCoord({ 1.0f,1.0f, 1.0f,0.0f ,0.0f,0.0f,0.0f,1.0f });
-	makeDrawMeta();
+	setSize(0.15f, 0.5f);
+	makeDrawMeta(getSize());
 
-	loadNewAnimation("down", 1000, { "images\\pipe_down.png" });
-	loadNewAnimation("up", 1000, { "images\\pipe_up.png" });
+	loadNewAnimation("up", 1000, { "images\\pipe.png" });
 	loadAnimation("up");
 }
 
@@ -146,8 +140,8 @@ Pipe::~Pipe()
 
 void Pipe::onTick()
 {
-	if (getPosition().at(0) <= -1.5f)
-		reroll(1.5f);
+	if (getPosition().at(0) <= -1.1f)
+		reroll(1.1f);
 	auto oriPos = getPosition();
 	setPosition(oriPos.at(0) - 0.01f, oriPos.at(1), oriPos.at(2));
 }
@@ -156,12 +150,16 @@ void Pipe::reroll(float x)
 {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
-	static std::uniform_real_distribution<float> distrib1(-2.0f, 2.0f);//down: 0.75~2.0 up:-2.0~0.75
+	static std::uniform_real_distribution<float> distrib1(-1.5f, 1.5f);//down: 0.75~2.0 up:-2.0~0.75
 	float d = distrib1(gen);
+	/*
 	if (d <= 1.0f)
 		loadAnimation("up");
 	else
 		loadAnimation("down");
+		*/
 
 	setPosition(x, d, 0.0f);
+	setSize(getSize()[0], (1.0f - abs(d)) * 2);
+	makeDrawMeta(getSize());
 }

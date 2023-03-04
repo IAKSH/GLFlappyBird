@@ -18,8 +18,12 @@ flat::Drawable::~Drawable()
 	glDeleteBuffers(1, &vao);
 }
 
-void flat::Drawable::makeDrawMeta()
+void flat::Drawable::makeDrawMeta(std::array<float, 2> size)
 {
+	float x = size[0] / 2;
+	float y = size[1] / 2;
+	writeVertexes({ x,y,0,x,-y,0,-x,-y,0,-x,y,0 });
+
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 

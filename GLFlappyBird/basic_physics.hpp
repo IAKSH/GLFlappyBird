@@ -7,6 +7,7 @@ namespace flat
 	class PhysicsObject
 	{
 	protected:
+		float sizeW, sizeH;
 		float posX, posY, posZ;
 		float velX, velY, velZ;
 		//float weight;
@@ -15,8 +16,11 @@ namespace flat
 		~PhysicsObject();
 		void setPosition(float x, float y, float z);
 		void setVelocity(float x, float y, float z);
+		void setSize(float w, float h);
 		std::array<float, 3> getPosition();
 		std::array<float, 3> getVelocity();
+		std::array<float, 2> getSize();
+		bool checkImpact(PhysicsObject& obj);
 	};
 
 	class Cameral : public PhysicsObject
