@@ -24,6 +24,7 @@ namespace flat
 
 	};
 
+	// abandoned (for now
 	class TransformMap
 	{
 	public:
