@@ -138,6 +138,7 @@
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="drawable.cpp" />
+    <ClCompile Include="flappybird.cpp" />
     <ClCompile Include="gameplay.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="animation.hpp" />
     <ClInclude Include="audio.hpp" />
     <ClInclude Include="drawable.hpp" />
+    <ClInclude Include="flappybird.hpp" />
     <ClInclude Include="gameplay.hpp" />
     <ClInclude Include="shader.hpp" />
   </ItemGroup>

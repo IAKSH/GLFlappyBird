@@ -45,6 +45,9 @@
     <ClCompile Include="..\3rdparty\glad_opengl3.3_core\src\glad.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="flappybird.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.hpp">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="shader.hpp">
       <Filter>engineFLAT\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="flappybird.hpp">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
