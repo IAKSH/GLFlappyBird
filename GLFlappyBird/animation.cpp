@@ -18,7 +18,7 @@ flat::Animation::Animation()
 
 flat::Animation::Animation(std::initializer_list<std::string_view>&& pathes)
 {
-	load(pathes);
+	loadAnimation(pathes);
 	Animation();
 }
 
@@ -32,7 +32,7 @@ void flat::Animation::setIntervalMS(uint32_t interval)
 	intervalMS = interval;
 }
 
-void flat::Animation::load(std::initializer_list<std::string_view>& pathes)
+void flat::Animation::loadAnimation(std::initializer_list<std::string_view>& pathes)
 {
 	auto count = pathes.size();
 
@@ -63,12 +63,12 @@ void flat::Animation::load(std::initializer_list<std::string_view>& pathes)
 	}
 }
 
-void flat::Animation::load(std::initializer_list<std::string_view>&& pathes)
+void flat::Animation::loadAnimation(std::initializer_list<std::string_view>&& pathes)
 {
-	load(pathes);
+	loadAnimation(pathes);
 }
 
-void flat::Animation::checkUpdate()
+void flat::Animation::checkAnimationUpdate()
 {
 	if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastUpdate).count() >= intervalMS)
 	{
@@ -83,4 +83,44 @@ void flat::Animation::checkUpdate()
 const uint32_t& flat::Animation::getCurrentTexture()
 {
 	return textures.at(currentIndice);
+}
+
+flat::AnimationObject::AnimationObject()
+{
+
+}
+
+flat::AnimationObject::~AnimationObject()
+{
+
+}
+
+void flat::AnimationObject::loadNewAnimation(std::string_view name, uint32_t intervalMS, std::initializer_list<std::string_view>&& pathes)
+{
+	auto ani = std::make_shared<flat::Animation>();
+	ani->loadAnimation(pathes);
+	ani->setIntervalMS(intervalMS);
+	animations[std::string(name)] = ani;
+}
+
+void flat::AnimationObject::removeAnimation(std::string_view name)
+{
+	animations.erase(std::string(name));
+}
+
+void flat::AnimationObject::loadAnimation(std::string_view name)
+{
+	currentAnimation = animations.find(std::string(name));
+}
+
+void flat::AnimationObject::useTexture()
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, currentAnimation->second->getCurrentTexture());
+	currentAnimation->second->checkAnimationUpdate();
+}
+
+size_t flat::AnimationObject::size()
+{
+	return animations.size();
 }

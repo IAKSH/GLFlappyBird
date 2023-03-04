@@ -137,8 +137,10 @@
     <ClCompile Include="..\3rdparty\glad_opengl3.3_core\src\glad.c" />
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="audio.cpp" />
+    <ClCompile Include="basic_physics.cpp" />
     <ClCompile Include="drawable.cpp" />
     <ClCompile Include="flappybird.cpp" />
+    <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="gameplay.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -146,8 +148,10 @@
   <ItemGroup>
     <ClInclude Include="animation.hpp" />
     <ClInclude Include="audio.hpp" />
+    <ClInclude Include="basic_physics.hpp" />
     <ClInclude Include="drawable.hpp" />
     <ClInclude Include="flappybird.hpp" />
+    <ClInclude Include="gameobject.hpp" />
     <ClInclude Include="gameplay.hpp" />
     <ClInclude Include="shader.hpp" />
   </ItemGroup>

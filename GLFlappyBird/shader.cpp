@@ -5,7 +5,7 @@
 
 flat::Shader::Shader(std::string_view vshaderPath, std::string_view fshaderPath)
 {
-	load(vshaderPath, fshaderPath);
+	loadAnimation(vshaderPath, fshaderPath);
 }
 
 flat::Shader::Shader()
@@ -88,7 +88,18 @@ void flat::Shader::use()
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 1);// "texture1" -> GL_TEXTURE1
 }
 
-void flat::Shader::load(std::string_view vshaderPath, std::string_view fshaderPath)
+// set position offset then draw image
+void flat::Shader::draw(flat::TransformMap& map, flat::GameObject& go)
+{
+	auto pos = go.getPosition();
+	//auto buffer = map.transform(pos.at(0), pos.at(1));
+	//std::cout << buffer.at(0) << '\t' << buffer.at(1) << std::endl;
+	//write("xyoffset", { buffer.at(0),buffer.at(1) });
+	write("xyoffset", { pos.at(0),pos.at(1) });
+	go.drawRaw();
+}
+
+void flat::Shader::loadAnimation(std::string_view vshaderPath, std::string_view fshaderPath)
 {
 	std::string vshaderBuffer, fshaderbuffer, readinBuffer;
 	std::ifstream ifs(&vshaderPath.at(0), std::ios::in);

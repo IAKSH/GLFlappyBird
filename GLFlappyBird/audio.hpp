@@ -6,6 +6,8 @@
 #include <memory>
 #include <array>
 
+#include "basic_physics.hpp"
+
 namespace wava
 {
     class WavAudio
@@ -46,26 +48,36 @@ namespace wava
 
 namespace flat
 {
-    // abandoned
-    class AudioSource
+    class AudioSource : public flat::PhysicsObject
     {
     private:
-        ALuint source = 0;
+        ALuint source;
         void releaseAudioSource();
+        void initializeDrawmeta();
     public:
         AudioSource();
         ~AudioSource();
-        void initialize();
-        void play(uint32_t buffer);
-        void play();
-        void stop();
-        int getBuffer();
-        bool getLoopable();
-        std::array<float, 3> getPostion();
-        std::array<float, 3> getVelocity();
+        void playSound(uint32_t buffer);
+        void stopSound();
+        bool getSoundLoopable();
         void setLoopable(bool b);
-        void setPosition(float x, float y, float z);
-        void setVelocity(float x, float y, float z);
-        void setBuffer(uint32_t buffer);
+        void updateSoundPhysics();
+    };
+
+    class AudioListener
+    {
+    private:
+        ALCdevice* device = nullptr;
+        ALCcontext* context = nullptr;
+        void initializeOpenAL();
+        void releaseOpenAL();
+        void createListener();
+    protected:
+        AudioListener();
+        ~AudioListener();
+        void initializeListener();
+        void setListenerPosition(float x, float y, float z);
+        void setListenerVelocity(float x, float y, float z);
+        void setVolume(float var);
     };
 }

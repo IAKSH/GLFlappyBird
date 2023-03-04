@@ -48,6 +48,12 @@
     <ClCompile Include="flappybird.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="gameobject.cpp">
+      <Filter>engineFLAT\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="basic_physics.cpp">
+      <Filter>engineFLAT\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.hpp">
@@ -67,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="flappybird.hpp">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="basic_physics.hpp">
+      <Filter>engineFLAT\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject.hpp">
+      <Filter>engineFLAT\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

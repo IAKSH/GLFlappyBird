@@ -5,9 +5,12 @@
 #include <format>
 #include <array>
 
+#include <AL/al.h>
+#include <AL/alc.h>
+
 flat::AudioSource::AudioSource()
 {
-
+    initializeDrawmeta();
 }
 
 flat::AudioSource::~AudioSource()
@@ -20,42 +23,28 @@ void flat::AudioSource::releaseAudioSource()
     alDeleteSources(1, &source);
 }
 
-void flat::AudioSource::initialize()
+void flat::AudioSource::initializeDrawmeta()
 {
     alGenSources(1, &source);
     alSourcef(source, AL_PITCH, 1.0f);
     alSourcef(source, AL_GAIN, 1.0f);
 }
 
-void flat::AudioSource::play(uint32_t buffer)
+void flat::AudioSource::playSound(uint32_t buffer)
 {
-    setBuffer(buffer);
-    play();
-}
-
-void flat::AudioSource::play()
-{
+    alBufferi(source, AL_BUFFER, buffer);
     alSourcePlay(source);
 }
 
-void flat::AudioSource::stop()
+void flat::AudioSource::stopSound()
 {
     alSourceStop(source);
 }
 
-void flat::AudioSource::setBuffer(uint32_t buffer)
+void flat::AudioSource::updateSoundPhysics()
 {
-    alSourcei(source, AL_BUFFER, buffer);
-}
-
-void flat::AudioSource::setVelocity(float x, float y, float z)
-{
-    alSource3f(source, AL_VELOCITY, x, y, z);
-}
-
-void flat::AudioSource::setPosition(float x, float y, float z)
-{
-    alSource3f(source, AL_POSITION, x, y, z);
+    alBuffer3f(source, AL_POSITION, posX, posY, posZ);
+    alBuffer3f(source, AL_VELOCITY, velX, velY, velZ);
 }
 
 void flat::AudioSource::setLoopable(bool b)
@@ -63,40 +52,16 @@ void flat::AudioSource::setLoopable(bool b)
     alSourcei(source, AL_LOOPING, b);
 }
 
-int flat::AudioSource::getBuffer()
-{
-    int buffer;
-    alGetSourcei(source, AL_BUFFER, &buffer);
-    return buffer;
-}
-
-bool flat::AudioSource::getLoopable()
+bool flat::AudioSource::getSoundLoopable()
 {
     int val;
     alGetSourcei(source, AL_LOOPING, &val);
     return static_cast<bool>(val);
 }
 
-std::array<float, 3> flat::AudioSource::getPostion()
-{
-    std::array<float, 3> buffer;
-    alGetSourcefv(source, AL_POSITION, buffer.data());
-    return buffer;
-}
-
-std::array<float, 3> flat::AudioSource::getVelocity()
-{
-    std::array<float, 3> buffer;
-    alGetSourcefv(source, AL_VELOCITY, buffer.data());
-    return buffer;
-}
-
 int wava::WavAudio::getFileCursorMark(std::ifstream& fs, std::string mark)
 {
     int len = mark.length();
-    // dynamic C-style array may not work on msvc
-    // if that happens, fix it by yourself
-    // it's sample, good luck
     char* buf = new char[len + 1];
     buf[len] = '\0';
     int i = 0;
@@ -218,4 +183,49 @@ uint32_t wava::WavAudio::getBuffer()
         std::cerr << "[libwavaudio] ERROR: called getBuffer() from an unloaded WavAudio\n";
         abort();
     }
+}
+
+flat::AudioListener::AudioListener()
+{
+    initializeListener();
+}
+
+flat::AudioListener::~AudioListener()
+{
+    releaseOpenAL();
+}
+
+void flat::AudioListener::initializeListener()
+{
+    initializeOpenAL();
+}
+
+void flat::AudioListener::setListenerPosition(float x, float y, float z)
+{
+
+}
+
+void flat::AudioListener::setListenerVelocity(float x, float y, float z)
+{
+
+}
+
+void flat::AudioListener::setVolume(float val)
+{
+
+}
+
+void flat::AudioListener::initializeOpenAL()
+{
+    // open defeault device
+    device = alcOpenDevice(nullptr);
+    context = alcCreateContext(device, nullptr);
+    alcMakeContextCurrent(context);
+}
+
+void flat::AudioListener::releaseOpenAL()
+{
+    alcMakeContextCurrent(nullptr);
+    alcDestroyContext(context);
+    alcCloseDevice(device);
 }

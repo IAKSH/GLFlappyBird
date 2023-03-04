@@ -2,6 +2,8 @@
 
 #include <array>
 
+#include "basic_physics.hpp"
+
 namespace flat
 {
 	class Drawable
@@ -13,13 +15,13 @@ namespace flat
 		uint32_t vbo, ebo, vao;
 		void createVBO();
 		void createEBO();
-	public:
+	protected:
 		Drawable();
 		~Drawable();
+		void makeDrawMeta();
+		void drawElements();
 		void writeVertexes(std::initializer_list<float> vals);
 		void writeTexCoord(std::initializer_list<float> vals);
 		void writeColors(std::initializer_list<float> vals);
-		void make();
-		void draw();
 	};
 }

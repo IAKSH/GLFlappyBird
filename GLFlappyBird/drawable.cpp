@@ -18,7 +18,7 @@ flat::Drawable::~Drawable()
 	glDeleteBuffers(1, &vao);
 }
 
-void flat::Drawable::make()
+void flat::Drawable::makeDrawMeta()
 {
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -37,7 +37,7 @@ void flat::Drawable::make()
 	glEnableVertexAttribArray(2);
 }
 
-void flat::Drawable::draw()
+void flat::Drawable::drawElements()
 {
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

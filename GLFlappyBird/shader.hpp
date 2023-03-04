@@ -8,31 +8,10 @@
 
 #include <glad/glad.h>
 
+#include "gameobject.hpp"
+
 namespace flat
 {
-	/*
-	class Triangle
-	{
-	};
-
-	class Rectangle
-	{
-	private:
-		std::array<float, 12> vertices;
-		std::array<float, 6> indices;
-
-	};
-
-	class DrawableObject
-	{
-	private:
-
-	public:
-		DrawableObject();
-		~DrawableObject();
-	};
-	*/
-
 	class Shader
 	{
 	private:
@@ -49,8 +28,9 @@ namespace flat
 		Shader();
 		~Shader();
 
-		void load(std::string_view vshaderPath, std::string_view fshaderPath);
+		void loadAnimation(std::string_view vshaderPath, std::string_view fshaderPath);
 		void use();
+		void draw(flat::TransformMap& map, flat::GameObject& go);
 
 		template <typename T>
 		void write(std::string_view uniform, std::initializer_list<T>&& vals)
