@@ -32,7 +32,7 @@ void flat::AudioSource::initializeAudioSource()
 
 void flat::AudioSource::playSound(uint32_t buffer)
 {
-    alBufferi(source, AL_BUFFER, buffer);
+    alSourcei(source, AL_BUFFER, buffer);
     alSourcePlay(source);
 }
 

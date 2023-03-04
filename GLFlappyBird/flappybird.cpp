@@ -1,7 +1,7 @@
 #include "flappybird.hpp"
 
-#include <random>
 #include <cmath>
+#include <random>
 
 void FlappyBird::handleInput(GLFWwindow* window)
 {
@@ -9,9 +9,13 @@ void FlappyBird::handleInput(GLFWwindow* window)
 		exit();
 	else if (glfwGetKey(window, GLFW_KEY_SPACE))
 	{
-		auto oriVelocity = bird.getVelocity();
-		bird.setVelocity(oriVelocity.at(0), 0.05f, oriVelocity.at(2));
-		bird.playFlySound();
+		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - bird.lastFly).count() >= 125)
+		{
+			bird.lastFly = std::chrono::steady_clock::now();
+			auto oriVelocity = bird.getVelocity();
+			bird.setVelocity(oriVelocity.at(0), 0.05f, oriVelocity.at(2));
+			bird.playFlySound();
+		}
 	}
 }
 
@@ -47,6 +51,8 @@ void FlappyBird::tick()
 
 	for (auto& pipe : pipes)
 	{
+		if (pipe.getPosition()[0] - bird.getPosition()[0] < 0.2f && -0.2f < pipe.getPosition()[0] - bird.getPosition()[0])
+			pipe.playScoredSound();
 		pipe.onTick();
 	}
 }
@@ -132,6 +138,8 @@ Pipe::Pipe()
 
 	loadNewAnimation("up", 1000, { "images\\pipe.png" });
 	loadAnimation("up");
+
+	scoredSound.load("sounds\\scored.wav");
 }
 
 Pipe::~Pipe()
@@ -162,4 +170,9 @@ void Pipe::reroll(float x)
 	setPosition(x, d, 0.0f);
 	setSize(getSize()[0], (1.0f - abs(d)) * 2);
 	makeDrawMeta(getSize());
+}
+
+void Pipe::playScoredSound()
+{
+	playSound(scoredSound.getBuffer());
 }

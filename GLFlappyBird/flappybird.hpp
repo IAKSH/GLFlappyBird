@@ -15,6 +15,7 @@ public:
 	~Bird();
 	void onTick();
 	void playFlySound();
+	std::chrono::steady_clock::time_point lastFly;
 };
 
 class Background : public flat::GameObject
@@ -28,11 +29,14 @@ public:
 
 class Pipe : public flat::GameObject
 {
+private:
+	wava::WavAudio scoredSound;
 public:
 	Pipe();
 	~Pipe();
 	void onTick();
 	void reroll(float x);
+	void playScoredSound();
 };
 
 class FlappyBird : public flat::Gameplay

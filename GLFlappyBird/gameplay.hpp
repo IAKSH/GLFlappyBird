@@ -18,6 +18,9 @@ namespace flat
 		flat::Shader shader;
 		GLFWwindow* window = nullptr;
 
+		ALCdevice* device = nullptr;
+		ALCcontext* context = nullptr;
+
 		void initializeShader();
 		void initializeGLFW();
 		void initializeGLAD();
