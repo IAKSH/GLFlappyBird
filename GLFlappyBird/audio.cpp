@@ -10,7 +10,7 @@
 
 flat::AudioSource::AudioSource()
 {
-    initializeDrawmeta();
+    initializeAudioSource();
 }
 
 flat::AudioSource::~AudioSource()
@@ -23,7 +23,7 @@ void flat::AudioSource::releaseAudioSource()
     alDeleteSources(1, &source);
 }
 
-void flat::AudioSource::initializeDrawmeta()
+void flat::AudioSource::initializeAudioSource()
 {
     alGenSources(1, &source);
     alSourcef(source, AL_PITCH, 1.0f);

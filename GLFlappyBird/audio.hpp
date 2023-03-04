@@ -53,7 +53,7 @@ namespace flat
     private:
         ALuint source;
         void releaseAudioSource();
-        void initializeDrawmeta();
+        void initializeAudioSource();
     public:
         AudioSource();
         ~AudioSource();
