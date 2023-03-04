@@ -30,7 +30,7 @@ namespace flat
 
 		void loadAnimation(std::string_view vshaderPath, std::string_view fshaderPath);
 		void use();
-		void draw(flat::TransformMap& map, flat::GameObject& go);
+		void draw(flat::TransformMap& map, std::array<float, 3>* trans, std::array<float, 4>* rotate, flat::GameObject& go);
 
 		template <typename T>
 		void write(std::string_view uniform, std::initializer_list<T>&& vals)

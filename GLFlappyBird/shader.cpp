@@ -1,5 +1,9 @@
 #include "shader.hpp"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <fstream>
 #include <string>
 
@@ -89,13 +93,15 @@ void flat::Shader::use()
 }
 
 // set position offset then draw image
-void flat::Shader::draw(flat::TransformMap& map, flat::GameObject& go)
+void flat::Shader::draw(flat::TransformMap& map, std::array<float, 3>* trans, std::array<float, 4>* rotate, flat::GameObject& go)
 {
-	auto pos = go.getPosition();
-	//auto buffer = map.transform(pos.at(0), pos.at(1));
-	//std::cout << buffer.at(0) << '\t' << buffer.at(1) << std::endl;
-	//write("xyoffset", { buffer.at(0),buffer.at(1) });
-	write("xyoffset", { pos.at(0),pos.at(1) });
+	glm::mat4 matrix(1.0f);
+	if (trans)
+		matrix = glm::translate(matrix, glm::vec3(trans->at(0), trans->at(1), trans->at(2)));
+	if (rotate)
+		matrix = glm::rotate(matrix, rotate->at(0), glm::vec3(rotate->at(0), rotate->at(1), rotate->at(2)));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, glm::value_ptr(matrix));
+
 	go.drawRaw();
 }
 

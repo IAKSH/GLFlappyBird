@@ -12,12 +12,19 @@ void FlappyBird::handleInput(GLFWwindow* window)
 	}
 }
 
+#include <iostream>
+
 void FlappyBird::draw()
 {
 	getShader().write("xyoffset_tex", { background.offset,0.0f });
-	getShader().draw(map, background);
+	getShader().draw(map, nullptr, nullptr, background);
+
 	getShader().write("xyoffset_tex", { 0.0f,0.0f });
-	getShader().draw(map, bird);
+	auto birdPos = bird.getPosition();
+	std::array<float, 3> birdTrans = { birdPos.at(0), birdPos.at(1), 0.0f };
+	//std::array<float, 4> birdRotate = { sin(birdPos.at(1) + 0.5f), 0.0f, 0.0f, 1.0f};
+	//getShader().draw(map, &birdTrans, &birdRotate, bird);
+	getShader().draw(map, &birdTrans, nullptr, bird);
 }
 
 void FlappyBird::tick()
